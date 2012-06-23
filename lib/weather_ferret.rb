@@ -3,32 +3,41 @@ require "ferrety_ferret"
 
 module Ferrety
   class WeatherFerret < Ferret
+    attr_accessor :zip, :term, :low_threshold, :high_threshold
 
-    def search(term, zip_code, low_threshold, high_threshold)
-      todays_forecast = get_todays_forecast(zip_code)
-      check_temp_ranges(todays_forecast, low_threshold, high_threshold)
-      check_weather_conditions(todays_forecast, term)
-      @alerts
+    def initialize(params)
+      raise "Zip is a required param" unless params[:zip]
+      @zip = params[:zip]
+      @term = params[:term]
+      @low_threshold = params[:low_threshold].to_i
+      @high_threshold = params[:high_threshold].to_i
+    end
+
+    def search
+      check_temp_ranges
+      check_weather_conditions
+      display_and_clear_alerts
     end
 
     private
 
-    def get_todays_forecast(zip_code)
-      GoogleWeather.new(zip_code).forecast_conditions.first
+    def todays_forecast
+      @forecast ||= GoogleWeather.new(@zip).forecast_conditions.first
     end
 
-    def check_temp_ranges(forecast, low_threshold, high_threshold)
-      if forecast.low.to_i < low_threshold.to_i
+    def check_temp_ranges
+      if todays_forecast.low.to_i < @low_threshold
         add_alert("Cold day! Low for the day is #{forecast.low}")
       end
-      if forecast.high.to_i > high_threshold.to_i
+      if todays_forecast.high.to_i > @high_threshold
         add_alert("Scorcher! High for the day is #{forecast.high}")
       end
     end
 
-    def check_weather_conditions(forecast, term)
-      if forecast.condition.upcase.scan(term.upcase).any?
-        add_alert("Today's weather condition: #{forecast.condition}")
+    def check_weather_conditions
+      weather_condition = todays_forecast.condition
+      if weather_condition.upcase.scan(@term.upcase).any?
+        add_alert("Today's weather condition: #{weather_condition}")
       end
     end
   end
