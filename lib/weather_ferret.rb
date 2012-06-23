@@ -6,17 +6,17 @@ module Ferrety
     attr_accessor :zip, :term, :low_threshold, :high_threshold
 
     def initialize(params)
-      raise "Zip is a required param" unless params[:zip]
-      @zip = params[:zip]
-      @term = params[:term]
-      @low_threshold = params[:low_threshold].to_i
-      @high_threshold = params[:high_threshold].to_i
+      super
+      @zip = params["zip"]
+      @term = params["term"]
+      @low_threshold = params["low_threshold"].to_i
+      @high_threshold = params["high_threshold"].to_i
     end
 
     def search
       check_temp_ranges
       check_weather_conditions
-      display_and_clear_alerts
+      @alerts
     end
 
     private
