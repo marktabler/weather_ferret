@@ -7,10 +7,11 @@ module Ferrety
 
     def initialize(params)
       super
-      @zip = params["zip"]
-      @term = params["term"]
-      @low_threshold = params["low_threshold"].to_i
-      @high_threshold = params["high_threshold"].to_i
+      puts @params.inspect
+      @zip = @params["zip"]
+      @term = @params["term"]
+      @low_threshold = @params["low_threshold"].to_i
+      @high_threshold = @params["high_threshold"].to_i
     end
 
     def search
@@ -27,10 +28,10 @@ module Ferrety
 
     def check_temp_ranges
       if todays_forecast.low.to_i < @low_threshold
-        add_alert("Cold day! Low for the day is #{forecast.low}")
+        add_alert("Cold day! Low for the day is #{todays_forecast.low}")
       end
       if todays_forecast.high.to_i > @high_threshold
-        add_alert("Scorcher! High for the day is #{forecast.high}")
+        add_alert("Scorcher! High for the day is #{todays_forecast.high}")
       end
     end
 
