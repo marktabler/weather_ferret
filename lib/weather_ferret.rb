@@ -7,7 +7,6 @@ module Ferrety
 
     def initialize(params)
       super
-      puts @params.inspect
       @zip = @params["zip"]
       @term = @params["term"]
       @low_threshold = @params["low_threshold"].to_i
