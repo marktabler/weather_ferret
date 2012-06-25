@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe Ferrety::WeatherFerret do
   it "can accept JSON parameters on initialize" do
-    foo = Ferrety::WeatherFerret.new('{"zip":"97086"}').zip.should == '97086'
+    Ferrety::WeatherFerret.new('{"zip":"97086"}').zip.should == '97086'
   end
 
   it "can accept Hash parameters on initialize" do
-    foo = Ferrety::WeatherFerret.new("zip" => '97086').zip.should == '97086'
+    Ferrety::WeatherFerret.new("zip" => '97086').zip.should == '97086'
   end
 
   context "in private methods" do
