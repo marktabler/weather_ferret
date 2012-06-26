@@ -1,5 +1,5 @@
 require "google_weather"
-require "ferrety_ferret"
+require "ferrety"
 
 module Ferrety
   class WeatherFerret < Ferret
